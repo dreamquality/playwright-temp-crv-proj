@@ -1,0 +1,1 @@
+[{"uid":"a3f117b27089ed96","name":"Testing login on the cvreformatter page","time":{"start":1728735248318,"stop":1728735274931,"duration":26613},"status":"failed","severity":"normal"},{"uid":"376f202d9b14b39b","name":"As a new user signup for Trial","time":{"start":1728735275260,"stop":1728735288862,"duration":13602},"status":"passed","severity":"normal"}]

@@ -1,0 +1,3 @@
+"Status","Start Time","Stop Time","Duration in ms","Parent Suite","Suite","Sub Suite","Test Class","Test Method","Name","Description"
+"passed","Sat Oct 12 12:14:35 GMT 2024","Sat Oct 12 12:14:48 GMT 2024","13602","chromium","registration.spec.ts","","","","As a new user signup for Trial",""
+"failed","Sat Oct 12 12:14:08 GMT 2024","Sat Oct 12 12:14:34 GMT 2024","26613","chromium","login.spec.ts","","","","Testing login on the cvreformatter page",""

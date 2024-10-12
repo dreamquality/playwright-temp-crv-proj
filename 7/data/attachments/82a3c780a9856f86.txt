@@ -1,0 +1,5 @@
+Attempt 1: Fetched messages count: 0
+No messages found
+Attempt 2: Fetched messages count: 1
+Verification email found: Confirm your CV Reformatter account
+Verification link found: https://cvreformatter.outseta.com/auth?confirmationToken=e1af38262221b766c27006a41652fdff
