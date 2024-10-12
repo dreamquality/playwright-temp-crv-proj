@@ -45,7 +45,7 @@ const config: PlaywrightTestConfig = {
     actionTimeout: 0,
 
     /* Base URL to use in actions like `await page.goto('/')`. */
-    baseURL: 'https://www.dev.cvreformatter.com/',
+    baseURL: 'https://dev.cvreformatter.com/',
     
     /* Установка локали на английский */
     locale: 'en-US',
