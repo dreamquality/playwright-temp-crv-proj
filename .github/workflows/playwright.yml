@@ -30,7 +30,7 @@ jobs:
       run: npx playwright install --with-deps
 
     - name: Run Playwright tests
-      run: npn run chromium
+      run: npm run chromium
       continue-on-error: true 
 
     - name: Generate Allure Report
