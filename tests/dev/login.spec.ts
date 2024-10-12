@@ -6,7 +6,7 @@ test.beforeEach(async ({ cvReformatterHomePage }) => {
   await cvReformatterHomePage.visit('/');
 });
 
-test.skip('Testing login on the cvreformatter page', async ({ cvReformatterHomePage, cvReformatterUploadPage, validationPage }) => {
+test('Testing login on the cvreformatter page', async ({ cvReformatterHomePage, cvReformatterUploadPage, validationPage }) => {
   await cvReformatterHomePage.navbar.visitLogin();
   await cvReformatterHomePage.navbar.loginModal.login({email:"alexxldubwork@gmail.com", password:"Qwerty1997228!"});
 
