@@ -1,155 +1,85 @@
-name: Playwright E2E Tests
-
+name: Playwright Tests
 on:
   push:
-    branches: [main, master]
+    branches: [ main, master ]
   pull_request:
-    branches: [main, master]
-
+    branches: [ main, master ]
 jobs:
-  test-dev:
+  test:
     timeout-minutes: 60
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v2
+    - uses: actions/checkout@v2
 
-      - name: Update apt packages
-        run: sudo apt-get update
+    - name: Update apt packages
+      run: sudo apt-get update
 
-      - uses: actions/setup-node@v2
-        with:
-          node-version: '18.x'
+    - uses: actions/setup-node@v2
+      with:
+        node-version: '18.x'
+    - name: Install dependencies
+      run: npm ci
 
-      - name: Install dependencies
-        run: npm ci
+    - name: Create .env file
+      run: |
+        echo "MAILSAC_API_KEY=${{ secrets.MAILSAC_API_KEY }}" >> .env
+        echo "OUTSETA_API_KEY=${{ secrets.OUTSETA_API_KEY }}" >> .env
+        echo "OUTSETA_API_SECRET=${{ secrets.OUTSETA_API_SECRET }}" >> .env
 
-      - name: Install Playwright and the latest browsers
-        run: npx playwright install --with-deps
+    - name: Install Playwright
+      run: npx playwright install --with-deps
 
-      - name: Create .env file
-        run: |
-          echo "MAILSAC_API_KEY=${{ secrets.MAILSAC_API_KEY }}" >> .env
-          echo "OUTSETA_API_KEY=${{ secrets.OUTSETA_API_KEY }}" >> .env
-          echo "OUTSETA_API_SECRET=${{ secrets.OUTSETA_API_SECRET }}" >> .env
+    - name: Run Playwright tests
+      run: npn run chromium
+      continue-on-error: true 
 
-      - name: Run Playwright tests on Chrome (dev)
-        env:
-          CI: true
-        run: npm run chromium:dev
-        continue-on-error: true 
+    - name: Generate Allure Report
+      if: always()
+      run: npm run allure-report
 
-      - name: Generate Allure Report for dev
-        if: always()
-        run: npm run allure-report-dev
+    - uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: playwright-test-results
+        path: test-results/
 
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: playwright-test-results-dev
-          path: test-results/
+    - uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: allure-test-results
+        path: allure-report/
 
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: allure-test-results-dev
-          path: allure-report/
+    - name: Publish JUnit Report
+      uses: mikepenz/action-junit-report@v2
+      if: always() # always run even if the previous step fails
+      with:
+        report_paths: 'junit-results/*.xml'
 
-      - name: Get Allure history for dev
-        uses: actions/checkout@v2
-        if: always()
-        continue-on-error: true
-        with:
-          ref: gh-pages
-          path: gh-pages
+    - name: Get Allure history
+      uses: actions/checkout@v2
+      if: always()
+      continue-on-error: true
+      with:
+        ref: gh-pages
+        path: gh-pages
 
-      - name: Allure Report action from marketplace for dev
-        uses: simple-elf/allure-report-action@master
-        if: always()
-        with:
-          allure_results: allure-results
-          allure_history: allure-history
-          keep_reports: 20
+    - name: Allure Report action from marketplace
+      uses: simple-elf/allure-report-action@master
+      if: always()
+      with:
+        allure_results: allure-results
+        allure_history: allure-history
+        keep_reports: 20
 
-      - name: Deploy dev report to Github Pages
-        if: always()
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_branch: gh-pages
-          publish_dir: allure-history/dev
+    - name: Deploy report to Github Pages
+      if: always()
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_branch: gh-pages
+        publish_dir: allure-history
 
+            
+    - name: Clean database via outseta
+      run: npm run clean-outseta
 
-  test-prod:
-    timeout-minutes: 60
-    runs-on: ubuntu-22.04
-    needs: test-dev
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Update apt packages
-        run: sudo apt-get update
-
-      - uses: actions/setup-node@v2
-        with:
-          node-version: '18.x'
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Install Playwright and the latest browsers
-        run: npx playwright install --with-deps
-
-      - name: Create .env file
-        run: |
-          echo "MAILSAC_API_KEY=${{ secrets.MAILSAC_API_KEY }}" >> .env
-          echo "OUTSETA_API_KEY=${{ secrets.OUTSETA_API_KEY }}" >> .env
-          echo "OUTSETA_API_SECRET=${{ secrets.OUTSETA_API_SECRET }}" >> .env
-
-      - name: Run Playwright tests on Chrome (prod)
-        env:
-          CI: true
-        run: npm run chromium:prod
-        continue-on-error: true 
-
-      - name: Generate Allure Report for prod
-        if: always()
-        run: npm run allure-report-prod
-
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: playwright-test-results-prod
-          path: test-results/
-
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: allure-test-results-prod
-          path: allure-report/
-
-      - name: Get Allure history for prod
-        uses: actions/checkout@v2
-        if: always()
-        continue-on-error: true
-        with:
-          ref: gh-pages
-          path: gh-pages
-
-      - name: Allure Report action from marketplace for prod
-        uses: simple-elf/allure-report-action@master
-        if: always()
-        with:
-          allure_results: allure-results
-          allure_history: allure-history
-          keep_reports: 20
-
-      - name: Deploy prod report to Github Pages
-        if: always()
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_branch: gh-pages
-          publish_dir: allure-history/prod
-
-      - name: Clean database via outseta
-        run: npm run clean-outseta

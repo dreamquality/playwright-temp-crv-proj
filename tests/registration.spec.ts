@@ -1,8 +1,8 @@
-import { searchTest as test } from './../tests';
-import {generateTempEmail, getVerifyAccountLink} from './../../utils/mailsac'
+import { searchTest as test } from './tests';
+import {generateTempEmail, getVerifyAccountLink} from '../utils/mailsac'
 
 test.beforeEach(async ({ cvReformatterHomePage }) => {
-  await cvReformatterHomePage.visit('/');
+  await cvReformatterHomePage.visit('https://cvreformatter.com');
 });
 
 test('As a new user signup for Trial', async ({ cvReformatterHomePage, cvReformatterUploadPage }) => {

@@ -1,4 +1,4 @@
-import { searchTest as test } from './../tests';
+import { searchTest as test } from './tests';
 import path from 'path';
 const filePath = path.join(__dirname, '../..', 'test-data', 'test-cv.docx'); // change in future
 
