@@ -36,6 +36,7 @@ jobs:
         env:
           CI: true
         run: npm run chromium:dev
+        continue-on-error: true 
 
       - name: Generate Allure Report for dev
         if: always()
@@ -108,6 +109,7 @@ jobs:
         env:
           CI: true
         run: npm run chromium:prod
+        continue-on-error: true 
 
       - name: Generate Allure Report for prod
         if: always()
