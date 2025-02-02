@@ -12,6 +12,7 @@
     "chromium": "npx playwright test --project=chromium",
     "webkit": "npx playwright test --project=webkit",
     "test": "npm run clean && npx playwright test --project=chromium",
+    "test-debug": "npm run clean && npx playwright test --project=chromium --debug",
     "test-head": "npm run clean && npx playwright test --headed",
     "reinstall": "npx playwright install",
     "install-deps": "npx playwright install-deps",

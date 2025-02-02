@@ -1,18 +1,18 @@
 require('dotenv').config();
 const axios = require('axios'); 
 
-// Base URL and Authentication details for Outseta API
 const OUTSETA_API_URL = 'https://cvreformatter.outseta.com/api/v1';
 const AUTH = {
-  apiKey: process.env.OUTSETA_API_KEY, // Ваш API-ключ Outsetа
-  apiSecret: process.env.OUTSETA_API_SECRET // Ваш секрет Outsetа
+  apiKey: process.env.OUTSETA_API_KEY,
+  apiSecret: process.env.OUTSETA_API_SECRET
 };
 
-// Helper constant to get headers with the token
 const getHeaders = () => ({
   'Authorization': `Outseta ${AUTH.apiKey}:${AUTH.apiSecret}`,
   'Content-Type': 'application/json'
 });
+
+const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 async function deleteAccountsByDomain(domain: string): Promise<void> {
   try {
@@ -49,6 +49,10 @@ async function deleteAccountsByDomain(domain: string): Promise<void> {
             await deletePerson(account.PrimaryContact.Uid);
             console.log(`Deleted person with UID: ${account.PrimaryContact.Uid} and email: ${account.PrimaryContact.Email}`);
           }
+
+
+          await delay(2000); 
+
         } catch (error) {
           console.error(`Error deleting account with UID ${account.Uid}:`, error);
         }
@@ -89,6 +93,9 @@ async function deletePersonsByDomain(domain: string): Promise<void> {
         try {
           await deletePerson(person.Uid);
           console.log(`Deleted person with UID: ${person.Uid} and email: ${person.Email}`);
+
+          await delay(2000); 
+
         } catch (error) {
           console.error(`Error deleting person with UID ${person.Uid}:`, error);
         }
@@ -99,7 +106,6 @@ async function deletePersonsByDomain(domain: string): Promise<void> {
   }
 }
 
-// Helper function to delete an account
 async function deleteAccount(accountUid: string): Promise<void> {
   try {
     const response = await axios.delete(`${OUTSETA_API_URL}/crm/accounts/${accountUid}`, {
@@ -114,7 +120,6 @@ async function deleteAccount(accountUid: string): Promise<void> {
   }
 }
 
-// Helper function to delete a person
 async function deletePerson(personUid: string): Promise<void> {
   try {
     const response = await axios.delete(`${OUTSETA_API_URL}/crm/people/${personUid}`, {
@@ -131,7 +136,6 @@ async function deletePerson(personUid: string): Promise<void> {
   }
 }
 
-// Helper function to log validation errors
 function logValidationErrors(errorResponse: any): void {
   if (errorResponse.ErrorMessage) {
     console.error(`Error: ${errorResponse.ErrorMessage}`);
@@ -151,6 +155,5 @@ function logValidationErrors(errorResponse: any): void {
   const domain = '@mailsac.com';
   await deleteAccountsByDomain(domain);
   await deletePersonsByDomain(domain);
-  // Указываем, что выполнение завершено успешно
   process.exit(0);
 })();

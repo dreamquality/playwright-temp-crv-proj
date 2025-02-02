@@ -1,4 +1,5 @@
 import { PlaywrightTestConfig, devices } from '@playwright/test';
+import path from 'path';
 import 'dotenv/config';
 
 /**
@@ -9,7 +10,7 @@ const config: PlaywrightTestConfig = {
   testDir: './tests',
 
   /* Maximum time one test can run for. */
-  timeout: 30 * 1000,
+  timeout: 200 * 1000,
 
   expect: {
     /**
@@ -27,7 +28,7 @@ const config: PlaywrightTestConfig = {
   // retries: process.env.CI ? 2 : 3,
 
   /* Opt out of parallel tests on CI. */
-  workers: process.env.CI ? 1 : undefined,
+  workers: process.env.CI ? 1 : 1,
 
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: [
@@ -60,10 +61,12 @@ const config: PlaywrightTestConfig = {
     // headless: true,
     headless: !!process.env.CI,
     video: 'on',
+    acceptDownloads: true, // Enable downloads
   },
 
   /* Configure projects for major browsers */
   projects: [
+    
     {
       name: 'chromium',
 

@@ -21,4 +21,15 @@ export class BasePage {
       await this.page.reload({ waitUntil: 'domcontentloaded' });
     });
   }
+  
+
+  createValidatedString(): string {
+    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    const now = new Date();
+    const day = now.getDate();
+    const month = months[now.getMonth()];
+    const year = now.getFullYear();
+
+    return `Validated - ${day} ${month} ${year}`;
+  }
 }

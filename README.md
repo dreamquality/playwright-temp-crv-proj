@@ -1,6 +1,6 @@
 <h1 dir="auto"><a class="anchor" aria-hidden="true" href="https://playwright.dev/"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd"></path></svg></a><g-emoji class="g-emoji" alias="performing_arts" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f3ad.png">🎭</g-emoji> Playwright</h1>
 
-# Boilerplate project for Web Test Automation - Playwright
+# Web Test Automation - Playwright E2E
 
 ### General requirements
 
@@ -8,7 +8,7 @@
 
 Download and install
 
-- Latest version of [Node.js](https://nodejs.org/es/download/)
+- Latest version of [Node.js](https://nodejs.org/es/download/ or at least 16.17.1)
 - Java Development Kit [(JDK)](https://www.oracle.com/java/technologies/downloads/)
    - Make sure you have the environment variable __JAVA_HOME__ set to the path of the respective JDK. __(Required for Allure report generation)__.
 
